@@ -1,5 +1,8 @@
-from conans import ConanFile, CMake, tools
+# Uploading to a new remote: 
+#   * conan export . reponame/stable
+#   * conan upload tmxlite/1.2.1@reponame/stable -r remote --all
 
+from conans import ConanFile, CMake, tools
 
 class TmxliteConan(ConanFile):
     name = "tmxlite"
@@ -19,6 +22,7 @@ class TmxliteConan(ConanFile):
 
     def build(self):
         cmake = CMake(self)
+        cmake.definitions["TMXLITE_STATIC_LIB"] = not self.options.shared
         cmake.configure(source_folder="tmxlite/tmxlite")
         cmake.build()
 
@@ -52,5 +56,7 @@ class TmxliteConan(ConanFile):
         self.copy("*.a", dst="lib", keep_path=False)
 
     def package_info(self):
-        self.cpp_info.libs = ["tmxlite"]
+        suffix = '-s' if not self.options.shared else ''
+        suffix += '-d' if self.settings.build_type == 'Debug' else ''
+        self.cpp_info.libs = ["tmxlite" + suffix]
 
