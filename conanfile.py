@@ -19,8 +19,8 @@ class TmxliteConan(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        # cmake.configure(source_folder="tmxlite/tmxlite")
-        # cmake.build()
+        cmake.configure(source_folder="tmxlite/tmxlite")
+        cmake.build()
 
     def package(self):
         filelist = [
@@ -52,5 +52,5 @@ class TmxliteConan(ConanFile):
         self.copy("*.a", dst="lib", keep_path=False)
 
     def package_info(self):
-        self.cpp_info.libs = ["hello"]
+        self.cpp_info.libs = ["tmxlite"]
 
