@@ -19,12 +19,33 @@ class TmxliteConan(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(source_folder="tmxlite")
-        cmake.build()
+        # cmake.configure(source_folder="tmxlite/tmxlite")
+        # cmake.build()
 
     def package(self):
-        self.copy("*.h", dst="include", src="hello")
-        self.copy("*hello.lib", dst="lib", keep_path=False)
+        filelist = [
+            'Config.hpp', 
+            "FreeFuncs.hpp", 
+            "ImageLayer.hpp", 
+            "Layer.hpp", 
+            "LayerGroup.hpp", 
+            "Map.hpp", 
+            "Object.hpp", 
+            "ObjectGroup.hpp", 
+            "Property.hpp", 
+            "TileLayer.hpp", 
+            "Tileset.hpp", 
+            "Types.hpp", 
+            "Types.inl"
+        ]
+
+        for h in filelist:
+            self.copy(h, src="tmxlite/tmxlite/include/tmxlite", dst="include/tmxlite", keep_path=False)
+
+        for h in ["Android.hpp", "Log.hpp"]:
+            self.copy(h, src="tmxlite/tmxlite/include/tmxlite/detail", dst="include/tmxlite/detail", keep_path=False)
+        
+        self.copy("*.lib", dst="lib", keep_path=False)
         self.copy("*.dll", dst="bin", keep_path=False)
         self.copy("*.so", dst="lib", keep_path=False)
         self.copy("*.dylib", dst="lib", keep_path=False)
